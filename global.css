@@ -1,0 +1,13 @@
+body {margin: 0;font-family: -apple-system, BlinkMacSystemFont, sans-serif;}
+h1 {font-size: 300%;margin: 0;}
+p {line-height: 175%;font-size: 110%;max-width: 600px;margin: 20px auto;}
+a:link {text-decoration: none;color: #007aff;}
+a:visited {color: #007aff;}
+a:hover {text-decoration: underline;}
+.arrow {fill: none;stroke-linecap: round;stroke-width: 6;}
+.page {min-height: 100vh;min-width: 100vw;}
+.wrap {display: flex;flex-direction: column;min-height: 90vh;align-items: center;overflow: auto;}
+.content {max-width: 640px;padding: 40px 10px 10px 10px;margin: auto;}
+.block {display: block;margin: auto;max-width: 100%;height: auto;}
+.nav {font-size: 120%;float: right;}
+.navBack {font-size: 120%;float: left;}
