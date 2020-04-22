@@ -1,0 +1,26 @@
+pre {
+    background-color: #111;
+    border-radius: 16px;
+}
+
+pre code {
+    font-family: Monaco, monospace;
+    display: block;
+    padding: 0 20px;
+    color: #a9bcbc;
+    line-height: 1.5em;
+    font-size: 90%;
+    overflow-x: auto;
+    white-space: pre;
+    -webkit-overflow-scrolling: touch;
+}
+
+.keyword {color: #e73289;}
+.type {color: #8281ca;}
+.call {color: #348fe5;}
+.property {color: #21ab9d;}
+.number {color: #db6f57;}
+.string {color: #fa641e;}
+.comment {color: #6b8a94;}
+.dotAccess {color: #92b300;}
+.preprocessing {color: #b68a00;}

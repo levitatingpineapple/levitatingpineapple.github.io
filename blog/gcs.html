@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Levitating Pineapple</title>
+<meta name="viewport" content="width=device-width" charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="blog.css">
+<link rel="stylesheet" type="text/css" href="code.css">
+</head>
+<body>
+
+<a href="index.html#Articles" class="navBack"><b>＜</b> Articles</a><br><br>
+<h1>Generic Segmented Control</h1>
+<p>Ever since I learned about <a href="https://developer.apple.com/documentation/uikit/uisegmentedcontrol">UISegmentedControl</a>, it looked like a natural match for controlling data, represented by enums. However It never felt right to convert an enumerated value into an integer (to set the selected segment), only to unsafely create said enumeration again from <a href="https://developer.apple.com/documentation/swift/rawrepresentable/">rawValue</a>.</p>
+
+<p>With the newfound flexibility of SwiftUI I came across a way of creating type safe and more reusable segmented controls.</p>
+
+<h2>If it quacks like an enum...</h2>
+
+<p>Although there isn't such a thing as an Enum protocol, it's possible to leverage Swift's ability to compose already existing protocols. This allows us to describe properties, required for binding a generic type to some sort of segmented control:
+</p>
+
+<pre>
+<code>
+<span class="keyword">protocol</span> SegmentBindable: <span class="type">CaseIterable</span>, <span class="type">CustomStringConvertible</span>, <span class="type">Hashable</span> { }
+</code>
+</pre>
+
+<ul>
+<li><a href="https://developer.apple.com/documentation/swift/caseiterable">CaseIterable</a> let's us access an array of all cases from which segments can be created</li>
+<li><a href="https://developer.apple.com/documentation/swift/customstringconvertible">CustomSringConvertible</a> will provide title string for each segment
+<li><a href="https://developer.apple.com/documentation/swift/hashable">Hashable</a> will allow SwiftUI distinguish segments from each other</li>
+</ul>
+
+<p>Now we can create an enum that conforms to <b>SegmentBindable</b> protocol with only addition being computed <i>description</i>  property. In this case enum's raw string value will be passed as the description, but any other logic would work fine too. Let's create an enum representing possible fillings of a pie:</p>
+
+<pre>
+<code>
+<span class="keyword">enum</span> Filling: <span class="type">String</span>, <span class="type">SegmentBindable</span> {
+    <span class="keyword">case</span> 🍒, 🥜, 🍓, 🍎
+    <span class="keyword">var</span> description: <span class="type">String</span> { <span class="string">"</span>\(<span class="keyword">self</span>.<span class="property">rawValue</span>)<span class="string">"</span> }
+}
+</code>
+</pre>
+
+<h2>SwiftUI View</h2>
+
+<p>After this preparation a SwiftUI View will have all the necessary information to directly get and set values of any enum that conforms to SegmentBindable. Here is a bare-bones example using ForEach: </p>
+
+<pre>
+<code>
+<span class="keyword">struct</span> SegmentedControl<T>: <span class="type">View</span> <span class="keyword">where</span> <span class="type">T</span>: <span class="type">SegmentBindable</span> {
+    
+    <span class="keyword">@Binding var</span> value: <span class="type">T</span>
+    <span class="keyword">let</span> segments: <span class="type">Array</span><<span class="type">T</span>>
+    
+    <span class="keyword">init</span>(<span class="keyword">_</span> binding: <span class="type">Binding</span><<span class="type">T</span>>) {
+        <span class="keyword">self</span>.<span class="property">_value</span> = binding
+        segments = <span class="type">T</span>.<span class="property">allCases</span> <span class="keyword">as</span>! <span class="type">Array</span><<span class="type">T</span>>
+    }
+
+    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> {
+        <span class="type">HStack</span> {
+            <span class="type">ForEach</span>(segments, id: \.<span class="keyword">self</span>) { segment <span class="keyword">in</span>
+                <span class="type">Text</span>(segment.<span class="property">description</span>)
+                    .<span class="call">scaleEffect</span>(segment == <span class="keyword">self</span>.<span class="property">value</span> ? <span class="number">2</span> : <span class="number">1</span>)
+                    .<span class="call">animation</span>(.<span class="dotAccess">default</span>)
+                    .<span class="call">onTapGesture</span> { <span class="keyword">self</span>.<span class="property">value</span> = segment }
+            }
+        }
+    }
+}
+</code>
+</pre>
+
+<h2>Usage</h2>
+
+<p>Generic segmented control can be used in just like other SwiftUI control that has a binding. Because of Swift's <a href="https://swift.org/blog/new-diagnostic-arch-overview/">bi-directional type inference</a>, we don't event need explicitly specify it's type! </p>
+
+<pre>
+<code>
+<span class="keyword">struct</span> PieView: <span class="type">View</span> {
+    <span class="keyword">@State private var</span> filling: <span class="type">Filling</span> = .🍎
+    
+    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> {
+        <span class="type">SegmentedControl</span>(value: $filling)
+    }
+}
+</code>
+</pre>
+
+<p>Now we can select the filling of our pie by tapping on each emoji like so:</p>
+
+<video autoplay playsinline loop muted>
+    <source src="pie.mov" type="video/mp4">
+</video>
+
+<h2>Conclusion</h2>
+
+<p>Generic segmented control allows us to create reusable UI for state representing enums in a type safe way. This control can be styled only once and then adapted for any set of options in the app. I have created a <a href="https://github.com/levitatingpineapple/GenericSegmentedControl">Swift Package </a>containing one that's styled to look like UISegmentedControl.</p>
+
+
+</body>
+</html>

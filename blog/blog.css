@@ -1,0 +1,26 @@
+
+body {
+	font-family: -apple-system, sans-serif;
+	max-width: 720px;
+	padding: 40px 16px 16px 16px;
+	margin: auto;
+}
+h1 {font-size: 300%;margin: 0px;}
+p, ul {line-height: 175%;}
+a:link {text-decoration: none;}
+a:hover {text-decoration: underline;}
+video {border-radius:8px;display: block;margin: auto;}
+.nav {font-size: 120%;float: right;}
+.navBack {font-size: 120%;float: left;}
+
+@media (prefers-color-scheme: light) {
+	body {color: #000; background: #EEE;}
+	a:link {color: #007AFF;}
+	a:visited {color: #007AFF;}
+}
+
+@media (prefers-color-scheme: dark) {
+	body {color: #D8D8D8; background: #181818;}
+	a:link {color: #0B84FF;}
+	a:visited {color: #0B84FF;}
+}
