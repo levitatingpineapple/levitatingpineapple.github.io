@@ -10,13 +10,11 @@
 
 <a href="../index.html#Articles" class="navBack"><b>＜</b> Articles</a><br><br>
 <h1>Generic Segmented Control</h1>
-<p>Ever since I learned about <a href="https://developer.apple.com/documentation/uikit/uisegmentedcontrol">UISegmentedControl</a>, it looked like a natural match for controlling data, represented by enums. However It never felt right to convert an enumerated value into an integer (to set the selected segment), only to unsafely create said enumeration again from <a href="https://developer.apple.com/documentation/swift/rawrepresentable/">rawValue</a>.</p>
-
-<p>With the newfound flexibility of SwiftUI I came across a way of creating type safe and more reusable segmented controls.</p>
+<p>Even though with SwiftUI it's finally possible to bind enum types to a segmented control (using the Picker view), I still find myself wishing for more customisability, when it comes to styling this UI component.</p>
 
 <h2>If it quacks like an enum...</h2>
 
-<p>Although there isn't such a thing as an Enum protocol, it's possible to leverage Swift's ability to compose already existing protocols. This allows us to describe properties, required for binding a generic type to some sort of segmented control:
+<p>There isn't such a thing as an Enum protocol, however it's possible to leverage Swift's ability to compose already existing protocols. This allows us to describe properties, required for binding a generic type to some sort of segmented control:
 </p>
 
 <pre>
